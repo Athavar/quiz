@@ -1,0 +1,49 @@
+body {
+    background-color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+}
+
+h1,
+h2,
+h3 {
+    text-transform: uppercase;
+    font-weight: lighter;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    color: #0165a3;
+}
+
+.frage {
+    text-transform: uppercase;
+    text-decoration: underline;
+}
+
+.frage div {
+    text-align: center;
+    display: inline;
+}
+
+.frage span {
+    text-transform: none;
+    text-decoration: none;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+#wrapper {
+    width: 1000px;
+    margin: 0 auto;
+    background-color: whitesmoke;
+}
+
+.antworten {
+    width: 800px;
+}
+
+.antworten div {
+    display: inline-block;
+    width: 400px;
+    margin: 10px 0px;
+}
