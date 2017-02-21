@@ -1,17 +1,24 @@
 <?php		//Definiere Variabeln und Klasse
 //Schalter m für Mode
-$maxFragen = 2;
-$quizDB = array();
+$maxFragen = 5;
+
 class Frage{
+	private $kategorie;
 	private $frage;
 	private $antworten;
+	private $wert;
 	private $loesung;
 	
 	
-	function __construct( $frage, $a1, $a2, $a3, $a4, $loesung) {
+	function __construct($kategorie, $frage, $a1, $a2, $a3, $a4, $wert, $loesung) {
+		$this->kategorie = $kategorie;
 		$this->frage = $frage;
 		$this->antworten = array($a1,$a2,$a3,$a4);
-		$this->loesung = $loesung;
+		$this->wert = $wert;
+		$this->loesung = $loesung - 1;
+	}
+	function getKategorie(){
+		return $this->kategorie;
 	}
 	function getFrage(){
 		return $this->frage;
@@ -24,6 +31,11 @@ class Frage{
 	}
 	
 }
+//Speichere Fragen in Array(Fragen/Antworten-Pool)
+$quizDB = array();
+require('fragen.php');
+require('fragen2.php');
+require('fragen3.php');
  ?>
 <!doctype html>
 <html>
@@ -34,6 +46,7 @@ class Frage{
 <body>
 <div id="wrapper">
 <header><h1>Das Random Quiz</h1></header>
+<br>
 <div id="quiz">
 <?php 
 session_start();	//Starte Session
@@ -44,10 +57,6 @@ if(!isset($_SESSION['frageRichtig'])){
 	$_SESSION['frageRichtig'] = 0;
 }
 
-//Speichere Fragen in Array(Fragen/Antworten-Pool)
-$quizDB = array(new Frage("Hätte man die tierischen Laute des Tyrannosaurus in Jurassic Park in unsere Sprache übersetzt, welchen Satz hätte er wahrheitsgemäß sprechen können?", "Ich glaub, ich bin in der falschen Zeit", "Ich liebe Jeff Goldblum","Ich fühle mich irgendwie zu groß" ,"Ich mag doch gar kein Fleisch", 0),
-				new Frage("Du hast keine Fragen?", "Ja", "Nein", "Vielleicht", "Will ich nicht sagen", 3),
-				new Frage("Du hast Fragen 2.0?", "Ja", "Nein", "Vielleicht", "Will ich nicht sagen", 3));
 				
 				
 
@@ -56,7 +65,8 @@ if(isset($_GET['m'])) {		//m Mode
 		case 'frage':	//Frage wird gestellt
 			
 			$_SESSION['frageID'] = rand(0,count($quizDB) - 1);
-			echo '<div class="frage">Frage ' . ($_SESSION['frageAmount'] + 1) . ':<div><span> '.$quizDB[$_SESSION['frageID']]->getFrage().'</span></div></div>';
+			echo '<h3 class="frage">'.$quizDB[$_SESSION['frageID']]->getKategorie().'</h3><br>';
+			echo '<div class="frage">Frage ' . ($_SESSION['frageAmount'] + 1) . ':<br><div><span> '.$quizDB[$_SESSION['frageID']]->getFrage().'</span></div></div>';
 			echo '<form  action="?" method="get"><input name="m" value="antwort" hidden>'.
 			 '<div class="antworten">'.
 			 '<div><input type="radio" name="a" value="0" id="antwort0" checked>'.
@@ -71,7 +81,7 @@ if(isset($_GET['m'])) {		//m Mode
 			
 			break;
 		case 'antwort':		//Antwort wird abgeliefert
-			if(isset($_GET['a'])){
+			if(isset($_GET['a']) && is_numeric($_GET['a'])){
 				if(isset($_SESSION['frageID'])){
 					$_SESSION['frageAmount'] += 1;
 					if($_GET['a'] == $quizDB[$_SESSION['frageID']]->getLösung()){
