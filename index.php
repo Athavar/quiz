@@ -70,14 +70,14 @@ if(isset($_GET['m'])) {		//m Mode
 			echo '<form  action="?" method="get"><input name="m" value="antwort" hidden>'.
 			 '<div class="antworten">'.
 			 '<div><input type="radio" name="a" value="0" id="antwort0" checked>'.
-			 '<label for="antwort0">'.$quizDB[$_SESSION['frageID']]->getAntwort(0) .'</label></div>'.
+			 '<label for="antwort0">1. '.$quizDB[$_SESSION['frageID']]->getAntwort(0) .'</label></div>'.
 			 '<div><input type="radio" name="a" value="1" id="antwort1">'.
-			 '<label for="antwort1">'.$quizDB[$_SESSION['frageID']]->getAntwort(1) .'</label></div>'.
+			 '<label for="antwort1">2. '.$quizDB[$_SESSION['frageID']]->getAntwort(1) .'</label></div>'.
 			 '<div><input type="radio" name="a" value="2" id="antwort2">'.
-			 '<label for="antwort2">'.$quizDB[$_SESSION['frageID']]->getAntwort(2) .'</label></div>'.
+			 '<label for="antwort2">3.'.$quizDB[$_SESSION['frageID']]->getAntwort(2) .'</label></div>'.
 			 '<div><input type="radio" name="a" value="3" id="antwort3">'.
-			 '<label for="antwort3">'.$quizDB[$_SESSION['frageID']]->getAntwort(3) .'</label></div></div>';
-			 echo '<input type="submit" value="Antworten"><input type="button" value="Andere Frage" href="?m=frage"></form>';
+			 '<label for="antwort3">4.'.$quizDB[$_SESSION['frageID']]->getAntwort(3) .'</label></div></div>';
+			 echo '<input type="submit" value="Antworten"><input id="nextquestion" type="button" value="Andere Frage" onClick="history.go();" disabled><script>document.getElementById(\'nextquestion\').disabled = false;</script></form>';
 			
 			break;
 		case 'antwort':		//Antwort wird abgeliefert
@@ -86,11 +86,11 @@ if(isset($_GET['m'])) {		//m Mode
 					$_SESSION['frageAmount'] += 1;
 					if($_GET['a'] == $quizDB[$_SESSION['frageID']]->getLösung()){
 						//richtige Lösung
-						echo "<p>Richtig</p>";
+						echo '<p>Richtig</p>';
 						$_SESSION['frageRichtig'] += 1;
 						
 					}else{
-						echo "<p>Falsch</p>";
+						echo '<p>Falsch, richtig wäre Antwort '.$quizDB[$_SESSION['frageID']]->getLösung().'</p>';
 						//falsche Lösung
 					}
 					
